@@ -1,4 +1,4 @@
-# FanSpeedInstaller - Raspberry Pi Fan Controller
+# 🌀 FanSpeedInstaller - Raspberry Pi Fan Controller
 **Developed by Victor GC (XEMIPROJECTS)**  
 Website: [ineedtohirethisguy.com](https://ineedtohirethisguy.com)
 
@@ -27,25 +27,37 @@ FanSpeedInstaller/
 
 ---
 
-## 🚀 Installation Instructions
+## 🚀 How to Download and Install on Your Raspberry Pi
 
-1. Open a terminal and navigate to the FanSpeedInstaller folder.
-2. Make sure the installer script is executable:
+1. Open a terminal on your Raspberry Pi.
+2. Clone this repository from GitHub:
+
+```bash
+git clone https://github.com/Vgarcan/raspberry-py---Fan-Controller.git
+```
+
+3. Navigate to the project folder:
+
+```bash
+cd raspberry-py---Fan-Controller
+```
+
+4. Make the installer script executable:
 
 ```bash
 chmod +x install_fan_controller.sh
 ```
 
-3. Run the installer:
+5. Run the installer:
 
 ```bash
 ./install_fan_controller.sh
 ```
 
-4. Follow the on-screen instructions.  
+6. Follow the on-screen instructions.  
 The installer will:
-- Create necessary directories.
 - Install required Python packages based on your Raspberry Pi model.
+- Create necessary directories (`logs/`, `tests/`).
 - Deploy and start the systemd service (`fan_controller.service`).
 - Set correct permissions automatically.
 
@@ -60,13 +72,17 @@ The installer will:
   - 50–59°C ➔ 50% speed
   - 60–69°C ➔ 70% speed
   - ≥ 70°C ➔ 100% speed
-- All activity is logged at `/home/youruser/scripts/fan_controller/logs/fan_controller.log`.
+- All activity is logged at:
+
+```
+/home/youruser/scripts/fan_controller/logs/fan_controller.log
+```
 
 ---
 
 ## 🧪 How to Test the Fan
 
-A professional tester is included!
+A professional tester is included to verify the fan controller.
 
 1. Navigate to the `tests/` folder:
 
@@ -74,38 +90,42 @@ A professional tester is included!
 cd /home/youruser/scripts/fan_controller/tests/
 ```
 
-2. Make sure the test script is executable:
-
-```bash
-chmod +x test_fan_controller.py
-```
-
-3. Run the test:
+2. Run the tester script:
 
 ```bash
 python3 test_fan_controller.py
 ```
 
-What the tester does:
-- Stops the running fan controller service.
-- Cycles the fan through 0%, 30%, 50%, 70%, and 100% speeds.
-- Performs two full cycles.
-- Logs everything at `/home/youruser/scripts/fan_controller/logs/fan_test.log`.
-- Automatically restarts the fan controller service afterward.
+The tester will:
+- Safely stop the running fan controller service.
+- Cycle the fan through 0%, 30%, 50%, 70%, and 100% speeds.
+- Perform two full cycles.
+- Log everything at:
+
+```
+/home/youruser/scripts/fan_controller/logs/fan_test.log
+```
+- Automatically restart the fan controller service afterward.
 
 ---
 
-## 🗑️ Uninstallation Instructions
+## 🗑️ How to Uninstall
 
-If you wish to completely remove the FanSpeedInstaller:
+If you wish to completely remove the Fan Controller:
 
-1. Make the uninstaller executable:
+1. Navigate to the installed project folder:
+
+```bash
+cd /home/youruser/scripts/fan_controller/
+```
+
+2. Make the uninstaller script executable:
 
 ```bash
 chmod +x uninstall_fan_controller.sh
 ```
 
-2. Run the uninstaller:
+3. Run the uninstaller:
 
 ```bash
 ./uninstall_fan_controller.sh
@@ -114,28 +134,26 @@ chmod +x uninstall_fan_controller.sh
 This will:
 - Stop and disable the systemd service.
 - Remove the systemd service file.
-- Delete all related files and logs.
+- Delete all related project files and logs.
 
 ---
 
 ## ⚠️ Important Notes
 
-- You must have `sudo` permissions to install/uninstall the service.
-- Tested on Raspberry Pi 3B+, 4B, and 5.
-- Ensure your fan is properly connected to the designated GPIO pin (default: GPIO 18).
+- You must have `sudo` permissions to install and uninstall the service.
+- Fully tested on Raspberry Pi 3B+, 4B, and 5 models.
+- Ensure your fan is properly connected to GPIO 18 (default pin).
 
 ---
 
 ## 🛠️ Future Improvements (Ideas)
 
-- Automatic detection and configuration of different fan models.
-- Web interface to monitor temperatures and fan status.
-- Adjustable temperature-speed curves via configuration file.
+- Automatic detection and configuration for different fan models.
+- Web dashboard to monitor temperatures and fan speed in real-time.
+- Configurable temperature-speed mapping through a config file.
 
 ---
 
 ## 📄 License
 
 This project is licensed under the MIT License.
-
----
