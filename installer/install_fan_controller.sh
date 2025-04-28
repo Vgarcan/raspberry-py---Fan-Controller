@@ -1,40 +1,33 @@
 #!/bin/bash
 # ========================================================
 # install_fan_controller.sh
-# Installer for FanSpeedInstaller Project
+# Installer for FanSpeedInstaller Project (Ultra Pro Version)
 # Author: Victor GC (XEMIPROJECTS)
 # ========================================================
 
 clear
 
-# ASCII Art Banner
+# ASCII Art Banner Mejorado
 ascii_art=(
-"      ________                              _________                    "
-"     /  _____/_____    _____   ____   ____  \\\\_   ___ \\\\  __ __  ______     "
-"    /   \\\\  ___\\\\__  \\\\  /     \\\\_/ __ \\\\_/ __ \\\\ /    \\\\  \\\\/ |  |  \\\\/  ___/     "
-"    \\\\    \\\\_\\\\  \\\\/ __ \\\\|  Y Y  \\\\  ___/\\\\  ___/ \\\\     \\\\____|  |  /\\\\___ \\\\      "
-"     \\\\______  (____  /__|_|  /\\\\___  >\\\\___  > \\\\______  /|____//____  >     "
-"            \\\\/     \\\\/      \\\\/     \\\\/     \\\\/         \\\\/            \\\\/      "
-""
-"    ______          _        ______                      _               "
-"   |  ____|        (_)      |  ____|                    | |              "
-"   | |__  __  ___   _  ___  | |__  _ __ _ __   ___  _ __ | |_  ___  _ __   "
-"   |  __| \\\\ \\\\/ / | | |/ _ \\\\ |  __|| '__| '_ \\\\ / _ \\\\| '_ \\\\| __|/ _ \\\\| '__|  "
-"   | |____ >  <| |_| |  __/ | |___| |  | |_) | (_) | | | | |_| (_) | |     "
-"   |______/_/\\\\_\\\\__, |\\\\___| |______|_|  | .__/ \\\\___/|_| |_|\\\\__|\\\\___/|_|     "
-"                  __/ |                | |                                "
-"                 |___/                 |_|                                "
-""
-"            XEMIPROJECTS presents...                                      "
-"            FanSpeedInstaller - Fan Controller Installer                  "
-"         www.ineedtohirethisguy.com                                        "
+"                                                                                                                     "
+"   ██████       ███████  ██       ███       ███████         ██       ██     ███  ████████   ███████   ██       ██   "
+"   ██   ████    ██        ██     ███        ██    ███      ████      ██    ██    ██         ██    ███  ██     ██    "
+"   ██      ██   ██         ██    ██         ██     ██     ███ ██     ██  ██      ██         ██     ██   ██   ██     "
+"   ██      ██   ███████    ██   ██   █████  ████████      ██   ██    █████       ███████    ██    ███    ██ ██      "
+"   ██      ██   ██          ██  ██   █████  ██     ███   ███   ███   ███ ███     ██         ███████       ███       "
+"   ██    ███   ███          █████           ██      ██  ██      ██   ██    ██    ██         ██   ███      ███       "
+"   ███████      ████████     ███            █████████  ███       ██  ██     ███  ████████   ██     ██     ███       "
+"                                                                                                                     "
+"            XEMIPROJECTS Presents... FanSpeedInstaller v2.0 🚀"
+"               (www.ineedtohirethisguy.com)"
 )
+
 
 # Print ASCII Art with slight animation
 for line in "${ascii_art[@]}"
 do
     echo "$line"
-    sleep 0.08
+    sleep 0.05
 done
 
 sleep 1
@@ -56,13 +49,13 @@ if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
 fi
 
 # Detect Raspberry Pi model
-MODEL=$(tr -d '\\0' < /proc/device-tree/model)
+MODEL=$(tr -d '\0' < /proc/device-tree/model)
 echo "[INFO] Raspberry Pi model detected: $MODEL"
 echo ""
 
 # Install necessary Python packages
 echo "[INFO] Installing required Python packages..."
-sudo apt update
+sudo apt update -y
 if [[ "$MODEL" == *"Raspberry Pi 5"* ]]; then
     sudo apt install -y python3-lgpio
 else
@@ -83,8 +76,11 @@ cp ./README.md "$INSTALL_DIR/README.md"
 
 # Set correct permissions
 echo "[INFO] Setting file permissions..."
-sudo chown -R "$CURRENT_USER":"$CURRENT_USER" "$INSTALL_DIR"
+sudo chown -R "$CURRENT_USER:$CURRENT_USER" "$INSTALL_DIR"
 chmod -R 755 "$INSTALL_DIR"
+chmod 755 "$INSTALL_DIR/logs"
+touch "$INSTALL_DIR/logs/fan_controller.log"
+chmod 644 "$INSTALL_DIR/logs/fan_controller.log"
 
 # Create systemd service
 echo "[INFO] Creating systemd service..."

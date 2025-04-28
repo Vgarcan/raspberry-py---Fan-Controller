@@ -1,17 +1,45 @@
 #!/bin/bash
 # ========================================================
 # uninstall_fan_controller.sh
-# Uninstaller for FanSpeedInstaller Project
+# Uninstaller for FanSpeedInstaller Project (Ultra Pro Edition)
 # Safely removes the Fan Controller systemd service and all installed files.
 # Author: Victor GC (XEMIPROJECTS)
 # ========================================================
 
 clear
 
-echo ""
-echo "========================================"
-echo "        Fan Controller Uninstaller"
-echo "========================================"
+# ASCII Art mini
+
+ascii_art=(
+"                                                                                                                     "
+"   ██████       ███████  ██       ███       ███████         ██       ██     ███  ████████   ███████   ██       ██   "
+"   ██   ████    ██        ██     ███        ██    ███      ████      ██    ██    ██         ██    ███  ██     ██    "
+"   ██      ██   ██         ██    ██         ██     ██     ███ ██     ██  ██      ██         ██     ██   ██   ██     "
+"   ██      ██   ███████    ██   ██   █████  ████████      ██   ██    █████       ███████    ██    ███    ██ ██      "
+"   ██      ██   ██          ██  ██   █████  ██     ███   ███   ███   ███ ███     ██         ███████       ███       "
+"   ██    ███   ███          █████           ██      ██  ██      ██   ██    ██    ██         ██   ███      ███       "
+"   ███████      ████████     ███            █████████  ███       ██  ██     ███  ████████   ██     ██     ███       "
+"      
+"       Fan Controller Uninstaller"                                                                                                               "
+)
+
+ascii_art=(
+"██╗   ██╗███╗   ██╗██╗   ██╗██╗███╗   ██╗"
+"██║   ██║████╗  ██║██║   ██║██║████╗  ██║"
+"██║   ██║██╔██╗ ██║██║   ██║██║██╔██╗ ██║"
+"╚██╗ ██╔╝██║╚██╗██║╚██╗ ██╔╝██║██║╚██╗██║"
+" ╚████╔╝ ██║ ╚████║ ╚████╔╝ ██║██║ ╚████║"
+"  ╚═══╝  ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝  ╚═══╝"
+""
+"       Fan Controller Uninstaller"
+)
+
+for line in "${ascii_art[@]}"
+do
+    echo "$line"
+    sleep 0.03
+done
+
 echo ""
 
 # Detect current user
@@ -26,23 +54,32 @@ if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
     exit 1
 fi
 
-# Stop the systemd service
-echo "[INFO] Stopping service if running..."
-sudo systemctl stop fan_controller.service 2>/dev/null
+# Stop the systemd service if active
+if systemctl is-active --quiet fan_controller.service; then
+    echo "[INFO] Stopping active service..."
+    sudo systemctl stop fan_controller.service
+else
+    echo "[INFO] Service not running, skipping stop..."
+fi
 
-# Disable the service
-echo "[INFO] Disabling service..."
-sudo systemctl disable fan_controller.service 2>/dev/null
+# Disable the systemd service
+if systemctl is-enabled --quiet fan_controller.service; then
+    echo "[INFO] Disabling service..."
+    sudo systemctl disable fan_controller.service
+else
+    echo "[INFO] Service already disabled or not found, skipping disable..."
+fi
 
 # Remove the systemd service file
 if [ -f "$SERVICE_FILE" ]; then
     echo "[INFO] Removing systemd service file..."
     sudo rm "$SERVICE_FILE"
 else
-    echo "[WARNING] Service file not found, skipping..."
+    echo "[WARNING] Service file not found, skipping removal..."
 fi
 
 # Reload systemd to apply changes
+echo "[INFO] Reloading systemd daemon..."
 sudo systemctl daemon-reload
 
 # Remove the installation directory
